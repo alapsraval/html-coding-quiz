@@ -35,9 +35,9 @@
                 </div>
             </div>
         </div>
-        <div class="container" id="questions">
+        <div class="container">
             <!-- Content here -->
-            <div class="row">
+            <div class="row" id="questions">
                 <div class="col-sm">
                     <form id="question-form">
                         <h2 id="question"></h2>
@@ -65,10 +65,17 @@
                                 <button type="submit" id="submit-btn" class="btn btn-primary">Submit</button>
                             </div>
                           </div> -->
-                    </form>      
+                    </form>     
                 </div>
             </div>
-            <div class="row" id="result"></div>
+            <div class="row" id="scores">
+                <div id="result" class="col-sm-12"></div>
+                <form id="score-form" class="col-sm-12 d-none">
+                    <p>Please enter your initials below to save your score.</p>
+                    <input type="text" id="initials" name="initials">
+                    <button type="submit" id="save-score" class="btn btn-success">Save</button>
+                </form> 
+            </div>
         </div>
 
         

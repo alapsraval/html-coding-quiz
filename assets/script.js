@@ -2,6 +2,7 @@
 let timerElement = document.querySelector("#timer");
 let startButton = document.querySelector(".start-button");
 let submitBtn = document.querySelector("#submit-btn");
+let saveScoreBtn = document.querySelector("#save-score");
 let timer;
 let timerCount = 100;
 let score = 0;
@@ -12,6 +13,8 @@ let questionEl = document.querySelector("#question");
 let optionsEl = document.querySelector("#options");
 let questionID = 0;
 let highScores = [];
+let initials = document.querySelector("#initials");
+let scoreForm = document.querySelector("#score-form");
 
 // function declarations
 
@@ -82,7 +85,8 @@ function showOptions(question) {
         opt = encodeURI(opt);
         let option = document.createElement("div");
         option.className = 'form-check';
-        option.innerHTML = `<input class="form-check-input" type="radio" name="answerOptions" id="option-${optionID + 1}" value=${optionID}><label class="form-check-label" for="option2">${decodeURI(opt)}</label>`;
+        option.innerHTML = `<input class="form-check-input" type="radio" name="answerOptions" id="option-${optionID + 1}" value=${optionID}>
+                            <label class="form-check-label" for="option-${optionID + 1}">${decodeURI(opt)}</label>`;
         optionsEl.appendChild(option);
         optionID++;
     }
@@ -97,8 +101,8 @@ function showOptions(question) {
 }
 
 
-function checkAnswer(event) {
-    event.preventDefault();
+function checkAnswer(e) {
+    e.preventDefault();
     let options = document.querySelectorAll('input[name="answerOptions"]');
     let selectedAnswer = Array.from(options).find(radio => radio.checked).value;
     if (selectedAnswer == questions[questionID].answer) {
@@ -117,16 +121,39 @@ function checkAnswer(event) {
 
 function showResult() {
     questionForm.classList.toggle("d-none");
-    resultElement.textContent = `Your final score is ${score}.`
+    scoreForm.classList.remove("d-none");
+    resultElement.innerHTML = `<p class="text-success">Your final score is ${score}.</p>`
+}
+
+function saveResults(e){
+    e.preventDefault();
+    let highScore = {
+        initials: initials.value,
+        score: score
+    }
+    
+    setHighScores(highScore);
+}
+
+function getHighScores(){
+    highScores = JSON.parse(localStorage.getItem('highScores')) || [];
+}
+
+function setHighScores(score){
+    highScores.push(score);
+    localStorage.setItem('highScores', JSON.stringify(highScores));
 }
 
 function init() {
     timerElement.textContent = timerCount;
     scoreElement.textContent = score;
+    getHighScores();
 }
 
 // event handlers
 
 startButton.addEventListener("click", startQuiz);
 submitBtn.addEventListener("click", checkAnswer);
+saveScoreBtn.addEventListener("click", saveResults);
+
 init();
