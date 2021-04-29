@@ -4,9 +4,9 @@ let startButton = document.querySelector(".start-button");
 let submitBtn = document.querySelector("#submit-btn");
 let saveScoreBtn = document.querySelector("#save-score");
 let timer;
-let timerCount = 100;
+let timerCount = 50;
 let score = 0;
-let scoreElement = document.querySelector("#score");
+// let scoreElement = document.querySelector("#score");
 let resultElement = document.querySelector("#result");
 let questionForm = document.querySelector("#question-form");
 let questionEl = document.querySelector("#question");
@@ -15,10 +15,14 @@ let questionID = 0;
 let highScores = [];
 let initials = document.querySelector("#initials");
 let scoreForm = document.querySelector("#score-form");
+let highScoresEl = document.querySelector("#high-scores");
+let highScoreTable = document.getElementById('high-score-table');
+
 
 // function declarations
 
 function startQuiz() {
+    init();
     showQuestion();
     startTimer();
 }
@@ -39,8 +43,9 @@ function startTimer() {
         // Tests if time has run out
         if (timerCount === 0) {
             // Clears interval
-            clearInterval(timer);
-            alert("Time has run out!!");
+            //clearInterval(timer);
+            //alert("Time has run out!!");
+            showResult();
             startButton.disabled = false;
         }
     }, 1000);
@@ -116,37 +121,73 @@ function checkAnswer(e) {
         score -= 10;
         timerCount -= 5;
     }
-    scoreElement.textContent = score;
+    // scoreElement.textContent = score;
 }
 
 function showResult() {
+    score = score + timerCount;
     questionForm.classList.toggle("d-none");
     scoreForm.classList.remove("d-none");
     resultElement.innerHTML = `<p class="text-success">Your final score is ${score}.</p>`
+    resultElement.classList.remove("d-none");
+    clearInterval(timer);
 }
 
-function saveResults(e){
+function saveResults(e) {
     e.preventDefault();
     let highScore = {
         initials: initials.value,
         score: score
     }
-    
+
     setHighScores(highScore);
+    scoreForm.reset();
+    scoreForm.classList.add("d-none");
+    showHighScores();
 }
 
-function getHighScores(){
+function getHighScores() {
     highScores = JSON.parse(localStorage.getItem('highScores')) || [];
 }
 
-function setHighScores(score){
+function setHighScores(score) {
     highScores.push(score);
+    highScores.sort(function (a, b) {
+        return b.score - a.score;
+    });
     localStorage.setItem('highScores', JSON.stringify(highScores));
 }
 
+function showHighScores() {
+    getHighScores();
+    while(highScoreTable.tBodies[0].rows.length > 0){
+        highScoreTable.tBodies[0].rows[0].remove()
+    }
+
+    //highScoreTable.tBodies[0].innerHTML = '';
+    //table.remove();
+    for (let score of highScores) {
+        let tableRow = highScoreTable.insertRow();
+        for (let columnName in score) {
+            let tableCell = tableRow.insertCell();
+            let tableCellValue = document.createTextNode(score[columnName]);
+            tableCell.appendChild(tableCellValue);
+        }
+    }
+    resultElement.classList.add("d-none");
+    highScoresEl.classList.remove("d-none");
+    startButton.disabled = false;
+}
+
 function init() {
+    timerCount = 50;
+    questionID = 0;
+    score = 0;
     timerElement.textContent = timerCount;
-    scoreElement.textContent = score;
+    highScoresEl.classList.add("d-none");
+    scoreForm.classList.add("d-none");
+    resultElement.classList.add("d-none");
+    questionForm.classList.remove("d-none");
     getHighScores();
 }
 
