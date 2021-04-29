@@ -40,12 +40,12 @@ var questions = [
 
     }, {
         question: "How is document type initialized in HTML5?",
-        answer: "<!DOCTYPE HTML>",
+        answer: "&lt;!DOCTYPE HTML\>",
         options: [
-            "</DOCTYPE HTML>",
-            "</DOCTYPE>",
-            "<!DOCTYPE HTML>",
-            "</DOCTYPE html>"
+            "&lt;DOCTYPE HTML\>",
+            "&lt;DOCTYPE\>",
+            "&lt;!DOCTYPE HTML\>",
+            "&lt;DOCTYPE html\>"
         ]
 
     }, {
@@ -55,12 +55,12 @@ var questions = [
     },
     {
         question: "Which of the following is the correct way to add background color in HTML?",
-        answer:"<body style = 'background-color: green;'>",
+        answer:"&lt;body style = 'background-color: green;'>",
         options: [
-            "<body color = 'green'>",
-            "<body style = 'background-color: green;'>",
-            "<body bg-color = 'green'>",
-            "<body style = 'background-color=green'>"
+            "&lt;body color = 'green'>",
+            "&lt;body style = 'background-color: green;'>",
+            "&lt;body bg-color = 'green'>",
+            "&lt;body style = 'background-color=green'>"
         ]
     }
 ]
