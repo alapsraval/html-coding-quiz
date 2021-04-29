@@ -1,10 +1,21 @@
+//glabla variables
 var timerElement = document.querySelector("#timer");
 var startButton = document.querySelector(".start-button");
 var timer;
 var timerCount;
 
+// function declarations
+
+function startQuiz(){
+    questions.forEach(question => {
+        return question.question;
+    });
+    startTimer();
+}
+
 // The setTimer function starts and stops the timer and triggers winGame() and loseGame()
 function startTimer() {
+    startButton.disabled = true;
     timerCount = 10;
     // Sets timer
     timer = setInterval(function () {
@@ -20,9 +31,12 @@ function startTimer() {
             // Clears interval
             clearInterval(timer);
             alert("Time has run out!!");
+            startButton.disabled = false;
         }
     }, 1000);
 }
+
+// flash timer when time is running out
 
 function flashTimer() {
     for (var i = 0; i < 5000; i = i + 1000) {
@@ -43,4 +57,6 @@ function hide() {
     }
 }
 
-startButton.addEventListener("click", startTimer);
+// event handlers
+
+startButton.addEventListener("click", startQuiz);
