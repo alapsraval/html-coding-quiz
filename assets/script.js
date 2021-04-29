@@ -16,7 +16,7 @@ let highScores = [];
 let initials = document.querySelector("#initials");
 let scoreForm = document.querySelector("#score-form");
 let highScoresEl = document.querySelector("#high-scores");
-let highScoreTable = document.getElementById('high-score-table');
+let highScoreTableContainer = document.getElementById('high-score-table');
 
 
 // function declarations
@@ -95,14 +95,7 @@ function showOptions(question) {
         optionsEl.appendChild(option);
         optionID++;
     }
-    submitBtn.classList.toggle("d-none");
-
-    // let button = document.createElement("button");
-    // button.type = "submit";
-    // button.id = "submit-btn";
-    // button.classList = "mt-3 btn btn-primary";
-    // button.innerText = "Submit";
-    // optionsEl.append(button);
+    submitBtn.classList.remove("d-none");
 }
 
 
@@ -114,7 +107,6 @@ function checkAnswer(e) {
         score += 10;
         questionID++;
         showQuestion();
-        submitBtn.classList.toggle("d-none");
 
     } else {
         //alert('Incorrect');
@@ -160,20 +152,47 @@ function setHighScores(score) {
 
 function showHighScores() {
     getHighScores();
-    while(highScoreTable.tBodies[0].rows.length > 0){
-        highScoreTable.tBodies[0].rows[0].remove()
-    }
+    // while(highScoreTable.tBodies[0].rows.length > 0){
+    //     highScoreTable.tBodies[0].rows[0].remove()
+    // }
 
     //highScoreTable.tBodies[0].innerHTML = '';
-    //table.remove();
+    let highScoreTable = document.querySelector('#high-score-table table');
+
+    if (highScoreTable) highScoreTable.remove();
+    var newTable = document.createElement("table");
+    newTable.classList.add('table');
+    //create table header
+    var tableHead = document.createElement("thead");
+    let tableHeadRow = document.createElement("tr");
+    let tableHeadCell1 = document.createElement("th");
+    let tableHeadCellValue1 = document.createTextNode('Initials');
+    tableHeadCell1.appendChild(tableHeadCellValue1);
+    tableHeadRow.appendChild(tableHeadCell1);
+
+    let tableHeadCell2 = document.createElement("th");
+    let tableHeadCellValue2 = document.createTextNode('Score');
+    tableHeadCell2.appendChild(tableHeadCellValue2);
+    tableHeadRow.appendChild(tableHeadCell2);
+
+    tableHead.appendChild(tableHeadRow);
+    newTable.appendChild(tableHead);
+
+    // create table rows with high score data
+    var tableBody = document.createElement("tbody");
     for (let score of highScores) {
-        let tableRow = highScoreTable.insertRow();
+        let tableRow = document.createElement("tr");
         for (let columnName in score) {
-            let tableCell = tableRow.insertCell();
+            let tableCell = document.createElement("td");
             let tableCellValue = document.createTextNode(score[columnName]);
             tableCell.appendChild(tableCellValue);
+            tableRow.appendChild(tableCell);
         }
+        tableBody.appendChild(tableRow);
     }
+    newTable.appendChild(tableBody);
+    highScoreTableContainer.appendChild(newTable);
+
     resultElement.classList.add("d-none");
     highScoresEl.classList.remove("d-none");
     startButton.disabled = false;
