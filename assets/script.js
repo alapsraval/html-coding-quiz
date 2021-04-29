@@ -4,7 +4,8 @@ let startButton = document.querySelector(".start-button");
 let submitBtn = document.querySelector("#submit-btn");
 let saveScoreBtn = document.querySelector("#save-score");
 let timer;
-let timerCount = 50;
+let timerAlert;
+let timerCount = 20;
 let score = 0;
 // let scoreElement = document.querySelector("#score");
 let resultElement = document.querySelector("#result");
@@ -17,6 +18,10 @@ let initials = document.querySelector("#initials");
 let scoreForm = document.querySelector("#score-form");
 let highScoresEl = document.querySelector("#high-scores");
 let highScoreTableContainer = document.getElementById('high-score-table');
+
+let correctAlert = document.querySelector(".correct");
+let incorrectAlert = document.querySelector(".incorrect");
+
 
 
 // function declarations
@@ -35,7 +40,7 @@ function startTimer() {
     timer = setInterval(function () {
         timerCount--;
         timerElement.textContent = timerCount;
-        if (timerCount < 5 && timerCount > 0) {
+        if (timerCount < 10 && timerCount > 0) {
             // start flashing timer
             flashTimer();
         }
@@ -54,6 +59,7 @@ function startTimer() {
 // flash timer when time is running out
 
 function flashTimer() {
+    timerElement.classList.add('text-danger');
     for (var i = 0; i < 5000; i = i + 1000) {
         setTimeout("hideTimer()", i);
         setTimeout("showTimer()", i + 500);
@@ -73,6 +79,9 @@ function hideTimer() {
 }
 
 function showQuestion() {
+    correctAlert.classList.add("d-none");
+    incorrectAlert.classList.add("d-none");
+    clearInterval(timerAlert);
     if (questions.length > questionID) {
         let question = questions[questionID];
         //return question.question;
@@ -104,16 +113,31 @@ function checkAnswer(e) {
     let options = document.querySelectorAll('input[name="answerOptions"]');
     let selectedAnswer = Array.from(options).find(radio => radio.checked).value;
     if (selectedAnswer == questions[questionID].answer) {
+        showAlert(true);
         score += 10;
         questionID++;
-        showQuestion();
-
+        timerAlert = setInterval(function () {
+            showQuestion();
+            timerCount += 1;
+        }, 1000);
+        //adding 2 second to timer to compensate for the interval above
     } else {
         //alert('Incorrect');
+        showAlert(false);
         score -= 10;
         timerCount -= 5;
     }
     // scoreElement.textContent = score;
+}
+
+function showAlert(isAnswerCorrect) {
+    if (isAnswerCorrect) {
+        correctAlert.classList.remove("d-none");
+        incorrectAlert.classList.add("d-none");
+    } else {
+        correctAlert.classList.add("d-none");
+        incorrectAlert.classList.remove("d-none");
+    }
 }
 
 function showResult() {
@@ -199,7 +223,7 @@ function showHighScores() {
 }
 
 function init() {
-    timerCount = 50;
+    timerCount = 20;
     questionID = 0;
     score = 0;
     timerElement.textContent = timerCount;
@@ -207,6 +231,8 @@ function init() {
     scoreForm.classList.add("d-none");
     resultElement.classList.add("d-none");
     questionForm.classList.remove("d-none");
+    correctAlert.classList.add("d-none");
+    incorrectAlert.classList.add("d-none");
     getHighScores();
 }
 
