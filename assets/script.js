@@ -5,7 +5,7 @@ let submitBtn = document.querySelector("#submit-btn");
 let saveScoreBtn = document.querySelector("#save-score");
 let timer;
 let timerAlert;
-let timerCount = 20;
+let timerCount = 50;
 let score = 0;
 // let scoreElement = document.querySelector("#score");
 let resultElement = document.querySelector("#result");
@@ -223,7 +223,7 @@ function showHighScores() {
 }
 
 function init() {
-    timerCount = 20;
+    timerCount = 50;
     questionID = 0;
     score = 0;
     timerElement.textContent = timerCount;
