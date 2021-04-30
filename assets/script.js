@@ -89,10 +89,11 @@ function showQuestion() {
         //return question.question;
         questionEl.textContent = question.question;
         showOptions(question);
+        questionForm.classList.remove("d-none");
     } else {
         showResult();
     }
-    questionForm.classList.remove("d-none");
+    //questionForm.classList.remove("d-none");
 }
 
 function showOptions(question) {
@@ -145,7 +146,7 @@ function showAlert(isAnswerCorrect) {
 
 function showResult() {
     score = score + timerCount;
-    questionForm.classList.remove("d-none");
+    questionForm.classList.add("d-none");
     scoreForm.classList.remove("d-none");
     resultElement.innerHTML = `<p class="text-success">Your final score is ${score}.</p>`
     resultElement.classList.remove("d-none");
@@ -230,6 +231,7 @@ function init() {
     timerCount = 50;
     questionID = 0;
     score = 0;
+    clearInterval(timer);
     timerElement.textContent = timerCount;
     highScoresEl.classList.add("d-none");
     scoreForm.classList.add("d-none");
@@ -238,6 +240,7 @@ function init() {
     correctAlert.classList.add("d-none");
     incorrectAlert.classList.add("d-none");
     getHighScores();
+    startButton.disabled = false;
 }
 
 // event handlers
