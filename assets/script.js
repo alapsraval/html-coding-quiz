@@ -1,6 +1,7 @@
 //glabla variables
 let timerElement = document.querySelector("#timer");
 let startButton = document.querySelector(".start-button");
+let resetButton = document.querySelector(".reset-button");
 let submitBtn = document.querySelector("#submit-btn");
 let saveScoreBtn = document.querySelector("#save-score");
 let timer;
@@ -18,6 +19,7 @@ let initials = document.querySelector("#initials");
 let scoreForm = document.querySelector("#score-form");
 let highScoresEl = document.querySelector("#high-scores");
 let highScoreTableContainer = document.getElementById('high-score-table');
+let highScoreBtn = document.querySelector(".high-score-btn");
 
 let correctAlert = document.querySelector(".correct");
 let incorrectAlert = document.querySelector(".incorrect");
@@ -90,6 +92,7 @@ function showQuestion() {
     } else {
         showResult();
     }
+    questionForm.classList.remove("d-none");
 }
 
 function showOptions(question) {
@@ -142,7 +145,7 @@ function showAlert(isAnswerCorrect) {
 
 function showResult() {
     score = score + timerCount;
-    questionForm.classList.toggle("d-none");
+    questionForm.classList.remove("d-none");
     scoreForm.classList.remove("d-none");
     resultElement.innerHTML = `<p class="text-success">Your final score is ${score}.</p>`
     resultElement.classList.remove("d-none");
@@ -175,6 +178,7 @@ function setHighScores(score) {
 }
 
 function showHighScores() {
+    init();
     getHighScores();
     // while(highScoreTable.tBodies[0].rows.length > 0){
     //     highScoreTable.tBodies[0].rows[0].remove()
@@ -230,7 +234,7 @@ function init() {
     highScoresEl.classList.add("d-none");
     scoreForm.classList.add("d-none");
     resultElement.classList.add("d-none");
-    questionForm.classList.remove("d-none");
+    questionForm.classList.add("d-none");
     correctAlert.classList.add("d-none");
     incorrectAlert.classList.add("d-none");
     getHighScores();
@@ -241,5 +245,7 @@ function init() {
 startButton.addEventListener("click", startQuiz);
 submitBtn.addEventListener("click", checkAnswer);
 saveScoreBtn.addEventListener("click", saveResults);
+resetButton.addEventListener("click", init);
+highScoreBtn.addEventListener("click", showHighScores);
 
 init();
